@@ -1,0 +1,135 @@
+DELETE AND TRUNCATE
+show databases;
+use may2025;
+#drop <database-name to drop the database>
+show tables;
+create table delete1(sno int,name varchar(40));
+show tables;
+desc delete1;
+alter table delete1 drop column sno;
+desc delete1;
+
+drop table delete1;
+show tables;
+
+create table dummy(sno int,name varchar(40),regno varchar(10),city varchar(20));
+
+ insert into dummy(sno,name,regno,city) values 
+ (1,"DJ","22BRS3452","Bangalore"),
+ (2,"Disha","22BAI0007","Chennai"),
+ (3,"Riya","22BRS1000","Mumbai"),
+ (4,"Virat","22BAI1101","Delhi");
+ 
+ select * from dummy;
+ 
+ delete from dummy where sno=1;
+ delete from dummy where city="Chennai";
+ select * from dummy;
+ 
+ delete from dummy;
+ select * from dummy;
+ 
+ CREATE TABLE employees (
+    emplid int,
+    empname VARCHAR(50),
+    salary int
+);
+
+INSERT INTO employees (emplid, empname, salary) VALUES
+(1, 'Dhanush', 55000),
+(2, 'Diya', 60000),
+(3, 'Joanna', 58000),
+(4, 'Samantha', 62000),
+(5, 'Alia', 59000);
+
+select * from employees;
+delete from employees where salary>60000;
+
+truncate table employees;
+
+desc employees;
+
+############################################################################################
+
+from rollback and savepoint:
+
+create database newmay2025;
+use newmay2025;
+CREATE TABLE employees (
+    emplid int,
+    empname VARCHAR(50),
+    salary int
+);
+start transaction;
+
+INSERT INTO employees values(1, 'Dhanush', 55000);
+savepoint a11;
+INSERT INTO employees values(2, 'Diya', 60000);
+savepoint a12;
+INSERT INTO employees values(3, 'Joanna', 58000);
+savepoint a13;
+INSERT INTO employees values(4, 'Samantha', 62000);
+savepoint a14;
+INSERT INTO employees values(5, 'Alia', 59000);
+savepoint a15;
+select * from employees;
+
+delete from employees where salary=59000;
+select * from employees; 
+
+rollback to a15;
+select *from employees;
+
+delete from employees where salary=62000;
+commit;
+rollback;
+
+select * from employees;
+
+
+CREATE TABLE employees1 (
+    emplid int,
+    empname VARCHAR(50),
+    salary int,
+    department varchar(50)
+);
+
+insert into employees1 (emplid, empname, salary, department) VALUES
+(1, 'Dhanush', 555000, 'IT'),
+(2, 'Diya', 60000, 'HR'),
+(3, 'Joanna', 58000, 'Finance'),
+(4, 'Samantha', 62000, 'Marketing'),
+(5, 'Alia', 59000, 'Operations'),
+(6, 'Ravi', 61000, 'IT'),
+(7, 'Sneha', 63000, 'HR'),
+(8, 'Arjun', 57000, 'Finance'),
+(9, 'Meera', 65000, 'Marketing'),
+(10, 'Varun', 60000, 'Operations');
+
+select * from employees1;
+
+select empname as NAME from employees1;
+select * from employees1 where salary <60000;
+select department,empname from employees1 where salary >65000;
+select * from employees1 where emplid=2;
+select empname,salary from employees where salary >=55000 and salary <70000;
+select empname,salary from employees1 where department="HR" and salary>58000;
+select department from employees1;
+select empname,emplid,salary from employees1 where (department ="HR" or department="IT") and salary>65000;
+select * from employees1;
+insert into employees1 values(11,"Whyrat",74000,"HR");
+insert into employees1 values(12,"Khowli",75001,"Finance");
+insert into employess1 values(13,"Dhobi",24000,"IT");
+insert into employees1 values(14,"Bablu",45000,"Opoerations");
+select emplid,empname from employees1 where (department="Finance" or department="IT") and salary >=58000 or salary <=7500;
+
+select * from employees1 where emplid in(1,2,3,7,14);
+
+select * from employees1 where emplid not in(1,2);
+select * from employees1 where department in("IT","HR","FINANCE");
+select * from employees1 where department not in("IT","HR","FINANCE");
+select * from employees1 where department not in("IT","HR","FINANCE") and (salary>50000 and salary <65000) ;
+
+#question - even no id and who is getting more salary and the person should be from HR or admin:
+#answer: select * from employees where emplid%2=0 and salary=(select max(salary) from employees where emplid%2=0 and department in("Admin","HR"));
+select * from employees1 where emplid%2=0 and salary=(select max(salary) from employees1 where department in("HR","Operations"));
