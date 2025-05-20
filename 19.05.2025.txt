@@ -1,0 +1,151 @@
+use newmay2025;
+show tables;
+create table category(
+c_id int primary key,
+c_name varchar(40),
+c_detail varchar(40)
+);
+
+create table product(
+p_id int primary key,
+c_id int,
+p_name varchar(40),
+p_details varchar(40),
+foreign key product(c_id) references category(c_id)
+);
+
+insert into category values(101,"Electronics","Mobiles,Smartgadgets");
+insert into category values(102,"Furnitures","Chairs,tables,etc..");
+insert into category values(103,"Stationary","books,notebooks,pens,pencil");
+
+insert into product values (1, 101, 'iPhone', 'Latest Apple phone');
+insert into product values (2, 101, 'Smartwatch', 'Fitness Tracker');
+insert into product values (3, 103, 'Notebook', '200 pages ruled');
+insert into product values (4, 103, 'Pen Pack', 'Blue & Black pens');
+insert into product values (5, 103, 'Pencil Box', 'HB pencils set');
+insert into product values (6, 101, 'Bluetooth Speaker', 'Portable JBL speaker');
+
+select * from product;
+
+select * from category;
+delete from category where c_id=101;
+select * from category;
+delete from category where c_id=102;
+select * from category;
+alter table category drop column c_id;
+alter table product drop column c_id;
+
+
+
+
+
+
+create table category1(
+c_id int primary key,
+c_name varchar(40),
+c_detail varchar(40)
+);
+insert into category1 values(101,"Electronics","Mobiles,Smartgadgets");
+insert into category1 values(102,"Furnitures","Chairs,tables,etc..");
+insert into category1 values(103,"Stationary","books,notebooks,pens,pencil");
+create table product1(
+p_id int primary key,
+c_id int,
+p_name varchar(40),
+p_details varchar(40),
+foreign key product1(c_id) references category1(c_id) on delete cascade
+);
+
+insert into product1 values (1, 101, 'iPhone', 'Latest Apple phone');
+insert into product1 values (2, 101, 'Smartwatch', 'Fitness Tracker');
+insert into product1 values (3, 103, 'Notebook', '200 pages ruled');
+insert into product1 values (4, 103, 'Pen Pack', 'Blue & Black pens');
+insert into product1 values (5, 103, 'Pencil Box', 'HB pencils set');
+insert into product1 values (6, 101, 'Bluetooth Speaker', 'Portable JBL speaker');
+
+select * from product1;
+select * from category1;
+delete from category1 where c_id=103;
+select * from product1;
+
+
+
+create table category2 (
+    c_id int primary key,
+    c_name varchar(40),
+    c_detail varchar(40)
+);
+
+
+insert into category2 values (101, 'Electronics', 'Mobiles, Smartgadgets');
+insert into category2 values (102, 'Furnitures', 'Chairs, tables, etc..');
+insert into category2 values (103, 'Stationary', 'books, notebooks, pens, pencil');
+
+
+create table product2 (
+    p_id int primary key,
+    c_id int,
+    p_name varchar(40),
+    p_details varchar(40),
+    foreign key (c_id) references category2(c_id) on update cascade
+);
+
+
+insert into product2 values (1, 101, 'iPhone', 'Latest Apple phone');
+insert into product2 values (2, 101, 'Smartwatch', 'Fitness Tracker');
+insert into product2 values (3, 103, 'Notebook', '200 pages ruled');
+insert into product2 values (4, 103, 'Pen Pack', 'Blue & Black pens');
+insert into product2 values (5, 103, 'Pencil Box', 'HB pencils set');
+insert into product2 values (6, 101, 'Bluetooth Speaker', 'Portable JBL speaker');
+
+select * from category2;
+select * from product2;
+
+update category2 set c_id=1152 where c_id=103;
+
+select * from product2;
+
+
+create table person(pid int not null,fname varchar(40) not null,lname varchar(40),age int);
+desc person;
+alter table person add constraint unique(pid);
+desc person;
+alter table person drop constraint pid;
+desc person;
+
+create table person1(pid int ,fname varchar(40) not null,lname varchar(40) not null, age int);
+desc person1;
+alter table person1 add primary key(pid);
+desc person1;
+
+alter table person1 drop primary key;
+desc person1;
+
+desc product;
+alter table product drop foreign key c_id;
+desc product;
+
+
+create table person_check (
+  id int primary key,
+  name varchar(50),
+  age int check (age >= 18)
+);
+
+insert into person_check values (1, 'dhanush', 20);
+insert into person_check values (2, 'diya', 20);
+insert into person_check values (3, 'joanna', 17);
+select * from person_check;
+
+create table person_default (
+  id int primary key,
+  name varchar(50),
+  country varchar(50) default 'india'
+);
+
+insert into person_default (id, name) values (1, 'samantha');
+insert into person_default values (2, 'alia', 'usa');
+insert into person_default (id, name) values (3, 'joanna');
+select * from person_default;
+
+
