@@ -1,0 +1,105 @@
+use newmay2025;
+show tables;
+
+select * from worker;
+
+select max(department) from worker;
+select distinct(department) from worker;
+select department,sum(salary) from worker group by department; 
+select department,sum(salary) as sum_dept from worker group by department order by sum_dept desc;
+select department,count(department) from worker group by department order by count(department) desc;
+select department,sum(salary) as sum_dept from worker group by department order by sum_dept desc limit 1;
+select department,count(department) from worker group by department order by count(department) desc limit 1;
+
+
+SELECT department, SUM(salary)
+FROM worker
+GROUP BY department
+ORDER BY SUM(salary) DESC
+LIMIT 1 ;
+
+SELECT department, SUM(salary)
+FROM worker
+GROUP BY department
+ORDER BY SUM(salary) DESC
+LIMIT 1 OFFSET 1;
+
+SELECT department, SUM(salary)
+FROM worker
+GROUP BY department
+ORDER BY SUM(salary) DESC
+LIMIT 1 OFFSET 2;
+
+
+select max(salary) from worker where salary<(Select max(salary) from worker);
+select department,count(department) from worker group by department having count(department)>3;
+
+select first_name,last_name from worker where salary=(select max(salary) from worker);
+select * from worker where salary>(select salary from worker where first_name="Niharika");
+select * from worker where joining_date=(select min(joining_date) from worker);
+select * from worker where salary>(select avg(salary) from worker);
+select department from worker group by department having sum(salary)>(select min(sum(salary)) from worker group by department);
+
+
+select department from worker group by department having sum(salary)>(select min(total_salary) from (select sum(salary) as total_salary from worker group by department) as salary_summary);
+
+create table dept (
+    deptno INT PRIMARY KEY,
+    dname VARCHAR(50),
+    loc VARCHAR(50)
+);
+INSERT INTO dept (deptno, dname, loc) VALUES
+(10, 'INVENTORY', 'HYBD'),
+(20, 'FINANCE', 'BGLR'),
+(30, 'HR', 'MUMBAI');
+create table  emp (
+    empno INT PRIMARY KEY,
+    ename VARCHAR(50),
+    job VARCHAR(50),
+    mgr INT,
+    deptno INT
+);
+INSERT INTO emp (empno, ename, job, mgr, deptno) VALUES
+(111, 'saketh', 'analyst', 444, 10),
+(222, 'sudha', 'clerk', 333, 20),
+(555, 'dhanush', 'developer', 333, 20),
+(666, 'diya', 'analyst', 555, 30),
+(777, 'joanna', 'clerk', 222, 30);
+insert into emp values (444, 'madhu', 'engineer', 222, 40);
+select * from emp cross join dept;
+select * from emp inner join dept on emp.deptno=dept.deptno;
+select * from emp natural join dept;
+select * from emp left outer join dept on emp.deptno=dept.deptno;
+select * from dept left outer join emp on emp.deptno=dept.deptno;
+select * from dept right outer join emp on emp.deptno=dept.deptno;
+select * from emp right outer join dept on emp.deptno=dept.deptno;
+
+
+
+create table student(
+s_id int,
+s_name varchar(25)
+);
+insert into student values (101,'jayanth'),(102,'karthik'),(103,'Praveen'),(105,'mahesh'),(106,'Arun');
+create table address(
+s_id int,
+s_address varchar(25));
+insert into address values (101,'coimbatore'),(104,'chennai'),(105,'pune');
+select * from student cross join address;
+select * from student inner join address on student.s_id=address.s_id;
+select * from student natural join address;
+select * from student left outer join address on student.s_id=address.s_id;
+select * from address left outer join student on student.s_id=address.s_id;
+select * from student right outer join address on student.s_id=address.s_id;
+select * from address right outer join student on student.s_id=address.s_id;
+
+#5th highest salary in worker table#
+select first_name,last_name,salary from worker order by salary desc limit 1 offset 4;
+
+SELECT DISTINCT (w1.salary)
+FROM Worker w1
+WHERE 5 = (
+    SELECT COUNT(DISTINCT w2.salary)
+    FROM Worker w2
+    WHERE w2.salary >= w1.salary
+);
