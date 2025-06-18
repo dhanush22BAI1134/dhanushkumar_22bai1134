@@ -1,2 +1,0 @@
-# dhanushkumar_22bai1134
-MONGO DB SUMMER INTERNSHIP
